@@ -1,0 +1,34 @@
+html,body,div,p,table,th,td,p,dl,dt,dd,h1,h2,h3,h4,h5,h6,ul,li
+{
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+.wrap, body, html {
+    width: 100%;
+}
+html {
+    background-color: #f0f0f0;
+    height: 100%;
+}
+body {
+    max-width: 750px;
+}
+body {
+    font: 400 14px/22px Arial,"Microsoft YaHei";
+    background-color: #eee;
+    min-height: 100%;
+}
+body {
+    margin: 0 auto;
+}
+body {
+    background-color: #eee;
+}
+.clearfix:after{
+    display: block;
+    content: "";
+    height: 1%;
+    overflow: hidden;
+    clear: both;
+}
