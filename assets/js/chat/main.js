@@ -124,13 +124,15 @@ function addMsg(type,txt,userInfo) {
     ]));
 }
 
+
 function saveLocalStorage(msgLists) {
     localStorage.setItem("msgLogging",JSON.stringify(msgLists))
 }
 
 
 function askXiaoYueSen(txt,callback) {
-    $.post("http://www.tuling123.com/openapi/api",{
+    $.post("http://www.tuling123.com/openapi/api",
+        {
         "key":"c21cd0d45d5e431dab34e79520de8872",
         "info": txt,
         'userid': myDetail.id
