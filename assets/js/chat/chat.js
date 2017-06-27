@@ -38,7 +38,7 @@ chatObj.prototype.sendMessage = function(){
                 'userid': this.myself.id
             },function (result) {
                 $this.saveMessageLocalStorage(sendMessage)
-                var getMessage = new Message(MessageType.receive,result.text,result.url);
+                var getMessage = new Message(MessageType.receive,result.text,result.url,result.code,result.list);
                 $this.saveMessageLocalStorage(getMessage)
             })
     }else {
@@ -54,6 +54,9 @@ chatObj.prototype.saveMessageLocalStorage=function (message) {
     this.createBubble(message)
     if(message.type ==MessageType.loading){
         message.type = MessageType.send
+    }
+    if(this.chatRecords.length>100){
+        this.chatRecords.splice(0,20)
     }
     this.chatRecords.push(message)
     localStorage.setItem("chatRecords-"+this.myself.id + '-' + this.yourself.id,JSON.stringify(this.chatRecords))
@@ -90,6 +93,26 @@ chatObj.prototype.sendLoading = function (message) {
  */
 chatObj.prototype.createBubble = function(message){
     var _html = ""
+    var _listStr = ""
+
+    if(message.code == 308000 && message['list']!=null){
+        var $html = ""
+        var len = message['list'].length
+        for( var i = 0;i < len;i++){
+            var item = message.list[i]
+            $html += '<a class="result-list-items" href="'+item.detailurl+'">' +
+                    '<img class="result-list-icon" src="'+item.icon+'"/>'+
+                    '<div>' +
+                    '<h4 class="result-list-title">'+item.name+'</h4>'+
+                    '<p class="result-list-desc">'+ item.info +'</p>'+
+                    '</div>'+
+                '</a>'
+        }
+
+        _listStr+='<div class="result-list-box">'+$html+'</div>'
+        _listStr+= '<div class="result-list-count">为您找到'+len+'条可用信息</div>'
+    }
+
     switch (message.type){
         case MessageType.loading:
             $("#"+message.id).find(".message-content").html(message.text)
@@ -103,7 +126,8 @@ chatObj.prototype.createBubble = function(message){
                         '<div class="message-content-box clearfix">'+
                         '<div class="message-content">'+
                             message.text+
-                            (message.url!=null?'<a class="answer-link" href="'+message.url+'">[点击查看]</a>':'')+
+                            (message.code === 200000?'<a class="answer-link" href="'+message.url+'">[点击查看]</a>':'')+
+                            _listStr+
                     '</div>'+
                     '</div>'+
                     '</div>'+
