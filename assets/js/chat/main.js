@@ -20,4 +20,8 @@ $(function () {
             Chat.sendMessage()
         }
     })
+    $messageInput.on("focus",function () {
+        var h = $(document).height()-$(window).height();
+        $(document).scrollTop(h);
+    })
 })

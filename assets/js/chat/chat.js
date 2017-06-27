@@ -16,7 +16,6 @@ chatObj.prototype.init = function (myself,yourself,chatWindow,inputControl) {
     this.chatRecords = JSON.parse(localStorage.getItem("chatRecords-"+myself.id + '-' + yourself.id)) || []
 
     for(var index in this.chatRecords){
-        console.log(this.chatRecords[index])
         this.createBubble(this.chatRecords[index])
     }
 }
@@ -39,7 +38,7 @@ chatObj.prototype.sendMessage = function(){
                 'userid': this.myself.id
             },function (result) {
                 $this.saveMessageLocalStorage(sendMessage)
-                var getMessage = new Message(MessageType.receive,result.text);
+                var getMessage = new Message(MessageType.receive,result.text,result.url);
                 $this.saveMessageLocalStorage(getMessage)
             })
     }else {
@@ -65,7 +64,7 @@ chatObj.prototype.saveMessageLocalStorage=function (message) {
  * @param message
  */
 chatObj.prototype.sendLoading = function (message) {
-    var _html = '<li class="message-items to-items" id="'+message.id+'">'+
+    var _html = '<div class="message-items to-items" id="'+message.id+'">'+
             '<div class="message-main">'+
             '<a href="javascript:void(0)" class="face-img-box">'+
             '<img class="face-img" src="'+this.myself.avatar+'" alt="">'+
@@ -80,7 +79,7 @@ chatObj.prototype.sendLoading = function (message) {
         '</div>'+
         '</div>'+
         '</div>'+
-        '</li>';
+        '</div>';
     this.chatWindow.append(_html)
     this.gotoScrollEnd(this.chatWindow)
 }
@@ -96,32 +95,33 @@ chatObj.prototype.createBubble = function(message){
             $("#"+message.id).find(".message-content").html(message.text)
             break
         case MessageType.receive:
-            _html = '<li class="message-items form-items">'+
+            _html = '<div class="message-items form-items">'+
                         '<div class="message-main">'+
                         '<a href="javascript:void(0)" class="face-img-box">'+
                         '<img class="face-img" src="'+this.yourself.avatar+'" alt="">'+
                         '</a>'+
                         '<div class="message-content-box clearfix">'+
                         '<div class="message-content">'+
-                        message.text
+                            message.text+
+                            (message.url!=null?'<a class="answer-link" href="'+message.url+'">[点击查看]</a>':'')+
                     '</div>'+
                     '</div>'+
                     '</div>'+
-                    '</li>'
+                    '</div>'
             break
         case MessageType.send:
-            _html = '<li class="message-items to-items">'+
+            _html = '<div class="message-items to-items">'+
                 '<div class="message-main">'+
                 '<a href="javascript:void(0)" class="face-img-box">'+
                 '<img class="face-img" src="'+this.myself.avatar+'" alt="">'+
                 '</a>'+
                 '<div class="message-content-box clearfix">'+
                 '<div class="message-content">'+
-                message.text
+                    message.text
             '</div>'+
             '</div>'+
             '</div>'+
-            '</li>'
+            '</div>'
             break
         default:
             break

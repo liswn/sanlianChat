@@ -11,6 +11,7 @@ body
     top: 0;
     bottom: 0;
     height: 100%;
+    overflow: hidden;
 }
 .message-box
 {
@@ -191,4 +192,10 @@ body
           transform: scale(1.0);
           -webkit-transform: scale(1.0);
       }
+}
+.answer-link
+{
+    display: block;
+    text-decoration: none;
+    color: #33aff3;
 }
