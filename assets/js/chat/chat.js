@@ -35,6 +35,9 @@ chatObj.prototype.sendMessage = function(){
             {
                 "key":"c21cd0d45d5e431dab34e79520de8872",
                 "info": text,
+                "loc":"北京市海淀区信息路28号",
+                "lon": "116.234632",
+                "lat":"39.45492",
                 'userid': this.myself.id
             },function (result) {
                 $this.saveMessageLocalStorage(sendMessage)
